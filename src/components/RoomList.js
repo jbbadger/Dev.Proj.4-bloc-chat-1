@@ -5,10 +5,12 @@ class RoomList extends Component {
   constructor(props){
     super(props);
     this.state = {
-      rooms: []
+      rooms: [],
+      newRoom: ''
     };
     this.roomsRef = this.props.firebase.database().ref('rooms');
-
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentDidMount() {
@@ -19,12 +21,28 @@ class RoomList extends Component {
      });
    }
 
+   handleChange(e) {
+     this.setState({ newRoom: e.target.value })
+   }
+
+   handleSubmit(e) {
+     e.preventDefault();
+     if (!this.state.newRoom) {return};
+     this.setState({ rooms: [...this.state.rooms, this.state.newRoom], newRoom: ''});
+     this.roomsRef.push({ name: this.state.newRoom});
+   }
+
+
   render(){
     return(
       <div className="room-list">
         <h1>Bloc Chat</h1>
         {this.state.rooms.map((roomItem, index) =>
           <ul key={index} className="room-num"><li> { roomItem.name }</li> </ul>)}
+        <form type="submit" onClick={ this.handleSubmit }>
+          <input type="text" value={ this.state.newRoom } onChange={ this.handleChange } />
+          <input type="submit" />
+        </form>
       </div>
     );
   }
