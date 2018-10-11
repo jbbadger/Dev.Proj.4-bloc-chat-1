@@ -4,11 +4,11 @@ import React, { Component } from 'react';
 class RoomList extends Component {
   constructor(props){
     super(props);
+    this.roomsRef = this.props.firebase.database().ref('rooms');
     this.state = {
       rooms: [],
       newRoom: ''
     };
-    this.roomsRef = this.props.firebase.database().ref('rooms');
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -40,7 +40,7 @@ class RoomList extends Component {
         {this.state.rooms.map((roomItem, index) =>
           <ul key={index} className="room-num">
           <li key={index}
-            onClick={() => this.props.setActiveRoom(roomItem) }> 
+            onClick={() => this.props.setActiveRoom(roomItem) }>
           { roomItem.name }</li> </ul>)}
         <form type="submit" onClick={ this.handleSubmit }>
           <input type="text" value={ this.state.newRoom } onChange={ this.handleChange } />

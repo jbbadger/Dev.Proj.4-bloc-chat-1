@@ -3,34 +3,32 @@ import React, { Component } from 'react';
 class MessageList extends Component {
   constructor(props){
     super(props);
-    this.state = {
-                   messages: [{
-                   username: "<USERNAME HERE>",
-                   content: "<CONTENT OF THE MESSAGE HERE>",
-                   sentAt: "<firebase.database.ServerValue.TIMESTAMP>",
-                   roomId: "<ROOM UID HERE>"}]
-                 };
     this.messagesRef = this.props.firebase.database().ref('messages');
+    this.state = {
+                   messages: [],
+                 };
   }
 
   componentDidMount() {
      this.messagesRef.on('child_added', snapshot => {
        const message = snapshot.val();
        message.key = snapshot.key;
-       this.setState({ message: this.state.message.concat( message ) });
+       this.setState({ message: this.state.messages.concat( message ) });
      });
    }
 
   render(){
     return(
       <div>
-
         <div>
-        { this.state.messages.map( (messageItem, index) =>
-          { return (
-            <p key={index}>
-            {messageItem.roomID === this.props.messageActiveRoom.key ? messageItem.content : '' }
-            </p>);})}
+        {this.state.messages.filter(messageItem =>
+          messageItem.roomId === this.props.activeRoom.key).map((messageItem, index) =>
+          <tr key={index}>
+            <td>User: {messageItem.username}</td>
+            <td>Message: {messageItem.content}</td>
+            <td>Created: {messageItem.sentAt}</td>
+          </tr>)
+        }
         </div>
       </div>
 

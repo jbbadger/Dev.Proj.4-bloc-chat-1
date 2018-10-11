@@ -3,7 +3,6 @@ import * as firebase from 'firebase';
 import './App.css';
 import RoomList from './components/RoomList.js';
 import MessageList from './components/MessageList.js';
-
 var config = {
 apiKey: "AIzaSyAcNE93Rk9nK1xtMoMZB7Sq454thOnJS0Y",
 authDomain: "dev-proj-4-bloc-chat-1.firebaseapp.com",
@@ -36,7 +35,7 @@ class App extends Component {
           <h2> { this.state.activeRoom } </h2>
           <MessageList
             firebase={firebase}
-            messageActiveRoom={ this.state. activeRoom } />
+            messageActiveRoom={ this.state.activeRoom } />
       </div>
     );
   }
